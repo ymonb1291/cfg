@@ -1,13 +1,16 @@
-import { join, isAbsolute } from "./depts.ts";
-import { existsSync } from "./depts.ts";
+import { join, isAbsolute, existsSync } from "./depts.ts";
 
 export class FileSystem {
   public readFile(pathToFile: string): string {
+    return this.loadFile(this.toAbsolutePath(pathToFile));
+  }
+
+  private toAbsolutePath(pathToFile: string): string {
     switch (isAbsolute(pathToFile)) {
       case true:
-        return this.loadFile(pathToFile);
+        return pathToFile;
       case false:
-        return this.loadFile(join(Deno.cwd(), pathToFile));
+        return join(Deno.cwd(), pathToFile);
     }
   }
 
