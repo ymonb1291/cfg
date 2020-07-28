@@ -2,6 +2,15 @@ import { join, isAbsolute } from "./depts.ts";
 import { existsSync } from "./depts.ts";
 
 export class FileSystem {
+  public readFile(pathToFile: string): string {
+    switch (isAbsolute(pathToFile)) {
+      case true:
+        return this.loadFile(pathToFile);
+      case false:
+        return this.loadFile(join(Deno.cwd(), pathToFile));
+    }
+  }
+
   private decode(pathToFile: string, data: Uint8Array): string {
     const decoder = new TextDecoder("utf-8");
     try {
@@ -16,15 +25,6 @@ export class FileSystem {
       return this.decode(pathToFile, Deno.readFileSync(pathToFile));
     } else {
       throw new Error(`Can't open file ${pathToFile}`);
-    }
-  }
-
-  public readFile(pathToFile: string): string {
-    switch (isAbsolute(pathToFile)) {
-      case true:
-        return this.loadFile(pathToFile);
-      case false:
-        return this.loadFile(join(Deno.cwd(), pathToFile));
     }
   }
 }
