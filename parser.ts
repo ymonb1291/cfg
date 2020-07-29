@@ -1,4 +1,5 @@
 import { parse, parseTOML, parseYAML } from "./depts.ts";
+import { ENVParser } from "./parsers/env.ts";
 
 type ENV = "ENV" | "env";
 type JSON = "JSON" | "json";
@@ -56,8 +57,12 @@ export class Parser {
   }
 
   private parseAsENV(data: string, pathToFile: string): unknown {
-    console.log("--PLACEHOLDER FOR ENV PARSING--");
-    return;
+    try {
+      const envParser = new ENVParser();
+      return envParser.parse(data);
+    } catch (error) {
+      throw new Error(`An unexpected error occured when parsing ${pathToFile}.`);
+    }
   }
 
   private parseAsJSON(data: string, pathToFile: string): unknown {
