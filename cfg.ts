@@ -1,23 +1,27 @@
-import { Opts } from "./options.ts";
-import { DEFAULT_LOADABLE, DEFAULT_SCOPE } from "./constants.ts";
+import { Opts, Options, InternalOptions } from "./options.ts";
+import { DEFAULT_SCOPE } from "./constants.ts";
 import { Configuration, Store } from "./store.ts";
+import { Loader } from "./loader.ts";
 
-export class Cfg<Config extends Configuration> extends Store {
-  private constructor(public config: Config) {
+export interface ENVConfiguration {
+  [key: string]: string | number | boolean;
+}
+
+export class Cfg<Config extends Configuration, Env extends ENVConfiguration> extends Store {
+  private constructor(public config: Config, public env: ENVConfiguration) {
     super();
   }
 
-  public static init<Config extends Configuration>(options: Opts): Cfg<Config> {
-    if (this.hasScope(options.scope || DEFAULT_SCOPE)) {
-      return this.getScope(options.scope || DEFAULT_SCOPE);
+  public static init<Config extends Configuration, Env extends ENVConfiguration>(opts: Opts): Cfg<Config, Env> {
+    opts.scope = opts.scope || DEFAULT_SCOPE;
+    if (this.hasScope(opts.scope)) {
+      return this.getScope(opts.scope);
     } else {
-      let cfg: Cfg<Config>;
-      if (Array.isArray(options.load)) {
-        cfg = new Cfg<Config>(options.load[0] as Config); // TODO: type assertion must be removed
-      } else {
-        cfg = new Cfg<Config>(DEFAULT_LOADABLE as Config); // TODO: type assertion must be removed
-      }
-      return this.setScope(options.scope || DEFAULT_SCOPE, cfg);
+      const options: Options = new Options(opts);
+      const iOpts: InternalOptions = options.internalOptions;
+      const loader: Loader = new Loader(iOpts);
+      const data: [Configuration, ENVConfiguration] = loader.load();
+      return this.setScope(opts.scope, new Cfg<Config, Env>(data[0] as Config, data[1] as Env)); // TODO: type assertion must be removed
     }
   }
 }

@@ -1,4 +1,4 @@
-import { Cfg } from "./cfg.ts";
+import { Cfg, ENVConfiguration } from "./cfg.ts";
 
 type ValueType = string | number | boolean | Configuration;
 
@@ -7,15 +7,17 @@ export interface Configuration {
 }
 
 interface Configurations {
-  [key: string]: Cfg<Configuration>;
+  [key: string]: Cfg<Configuration, ENVConfiguration>;
 }
 
 export abstract class Store {
   private static configurations: Configurations = {};
 
-  protected static getScope<Config extends Configuration>(scope: string): Cfg<Config> {
+  protected static getScope<Config extends Configuration, Env extends ENVConfiguration>(
+    scope: string
+  ): Cfg<Config, Env> {
     if (this.hasScope(scope)) {
-      return this.configurations[scope.toLowerCase()] as Cfg<Config>;
+      return this.configurations[scope.toLowerCase()] as Cfg<Config, Env>;
     } else {
       throw new Error(`Internal error [UNKNOWN_SCOPE].`);
     }
@@ -25,7 +27,10 @@ export abstract class Store {
     return Object.keys(this.configurations).includes(scope.toLocaleLowerCase());
   }
 
-  protected static setScope<Config extends Configuration>(scope: string, config: Cfg<Config>): Cfg<Config> {
+  protected static setScope<Config extends Configuration, Env extends ENVConfiguration>(
+    scope: string,
+    config: Cfg<Config, Env>
+  ): Cfg<Config, Env> {
     if (!this.hasScope(scope)) {
       return (this.configurations[scope.toLowerCase()] = config);
     } else {

@@ -1,35 +1,46 @@
-import { Cfg } from "./cfg.ts";
+import { Cfg, ENVConfiguration } from "./cfg.ts";
 import { isPlainObject } from "./utils.ts";
 import { Opts, Loadable } from "./options.ts";
 import { Configuration } from "./store.ts";
 
-export function cfg<Config extends Configuration>(): Cfg<Config>;
-export function cfg<Config extends Configuration>(scope: string): Cfg<Config>;
-export function cfg<Config extends Configuration>(load: Loadable[]): Cfg<Config>;
-export function cfg<Config extends Configuration>(scope: string, load: Loadable[]): Cfg<Config>;
-export function cfg<Config extends Configuration>(options: Opts): Cfg<Config>;
-export function cfg<Config extends Configuration>(...args: any): Cfg<Config> {
+export function cfg<Config extends Configuration, Env extends ENVConfiguration>(): Cfg<Config, Env>;
+export function cfg<Config extends Configuration, Env extends ENVConfiguration>(
+  scope: string
+): Cfg<Config, Env>;
+export function cfg<Config extends Configuration, Env extends ENVConfiguration>(
+  load: Loadable[]
+): Cfg<Config, Env>;
+export function cfg<Config extends Configuration, Env extends ENVConfiguration>(
+  scope: string,
+  load: Loadable[]
+): Cfg<Config, Env>;
+export function cfg<Config extends Configuration, Env extends ENVConfiguration>(
+  options: Opts
+): Cfg<Config, Env>;
+export function cfg<Config extends Configuration, Env extends ENVConfiguration>(
+  ...args: any
+): Cfg<Config, Env> {
   switch (args.length) {
     case 2:
-      return Cfg.init<Config>({
+      return Cfg.init<Config, Env>({
         load: args[1],
         scope: args[0],
       });
     case 1:
       if (typeof args[0] === "string") {
-        return Cfg.init<Config>({
+        return Cfg.init<Config, Env>({
           scope: args[0],
         });
       } else if (Array.isArray(args[0])) {
-        return Cfg.init<Config>({
+        return Cfg.init<Config, Env>({
           load: args[0],
         });
       } else if (isPlainObject(args[0])) {
-        return Cfg.init<Config>(args[0] as object);
+        return Cfg.init<Config, Env>(args[0] as object);
       } else {
         throw new Error(`Invalid argument`);
       }
     default:
-      return Cfg.init<Config>({});
+      return Cfg.init<Config, Env>({});
   }
 }
