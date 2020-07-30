@@ -1,7 +1,9 @@
 import { Cfg } from "./cfg.ts";
 
+type ValueType = string | number | boolean | Configuration;
+
 export interface Configuration {
-  [key: string]: string | number;
+  [key: string]: ValueType | ValueType[];
 }
 
 interface Configurations {
