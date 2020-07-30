@@ -1,5 +1,5 @@
 import { parse, parseTOML, parseYAML } from "./depts.ts";
-import { ENVParser } from "./parsers/env.ts";
+import { ENVParser } from "./envparser.ts";
 
 type ENV = "ENV" | "env";
 type JSON = "JSON" | "json";
