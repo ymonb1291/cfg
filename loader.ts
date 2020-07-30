@@ -60,7 +60,7 @@ export class Loader {
     return Object.assign({}, ...configurations);
   }
 
-  private mergeEnv(configuration: any, env: ENVConfiguration): Configuration {
+  private mergeEnv(configuration: Configuration, env: ENVConfiguration): Configuration {
     if (this.internalOptions.env.merge) {
       return Object.assign({}, configuration, env);
     }
