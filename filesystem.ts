@@ -1,3 +1,5 @@
+// TODO update error messages
+
 import { join, isAbsolute, existsSync } from "./depts.ts";
 
 export class FileSystem {
