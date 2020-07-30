@@ -21,7 +21,7 @@ export class Cfg<Config extends Configuration, Env extends ENVConfiguration> ext
       const iOpts: InternalOptions = options.internalOptions;
       const loader: Loader = new Loader(iOpts);
       const data: [Configuration, ENVConfiguration] = loader.load();
-      return this.setScope(opts.scope, new Cfg<Config, Env>(data[0] as Config, data[1] as Env)); // TODO: type assertion must be removed
+      return this.setScope(opts.scope, new Cfg<Config, Env>(data[0] as Config, data[1] as Env));
     }
   }
 }
