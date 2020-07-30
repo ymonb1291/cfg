@@ -2,6 +2,7 @@ import { Cfg, ENVConfiguration } from "./cfg.ts";
 
 type ValueType = string | number | boolean | Configuration;
 
+// TODO: move to ./cfg.ts ?
 export interface Configuration {
   [key: string]: ValueType | ValueType[];
 }
