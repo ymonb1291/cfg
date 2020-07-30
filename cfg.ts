@@ -8,7 +8,7 @@ export interface ENVConfiguration {
 }
 
 export class Cfg<Config extends Configuration, Env extends ENVConfiguration> extends Store {
-  private constructor(public config: Config, public env: ENVConfiguration) {
+  private constructor(public config: Config, public env: Env) {
     super();
   }
 
