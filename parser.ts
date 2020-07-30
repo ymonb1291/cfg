@@ -16,6 +16,10 @@ enum MarkupLanguages {
 }
 
 export class Parser {
+
+  // TODO: We are only using the language argument for "ENV". Why does MarkupLanguage support
+  // upper and lower cases then? It should be attempted to let the end user specify the language.
+  // But can TS differenciate an object such as {path: "abc.yml", lang: "YAML"} with Configuration?
   public parse(data: string, pathToFile: string, language?: MarkupLanguage): unknown {
     language = language || this.inferLanguage(pathToFile);
 
