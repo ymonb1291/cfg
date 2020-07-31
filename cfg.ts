@@ -30,7 +30,7 @@ export class Cfg<Config extends Configuration, Env extends ENVConfiguration> ext
     return this.setScope(scope, new Cfg<Config, Env>(data[0] as Config, data[1] as Env));
   }
 
-  public static generate<Config extends Configuration, Env extends ENVConfiguration>(
+  private static generate<Config extends Configuration, Env extends ENVConfiguration>(
     opts: Opts
   ): Cfg<Config, Env> {
     opts.scope = opts.scope || DEFAULT_SCOPE;
