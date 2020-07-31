@@ -1,6 +1,6 @@
 import { DEFAULT_ENV_EXPORT, DEFAULT_ENV_MERGE, DEFAULT_ENV_IMPORT, DEFAULT_ENV_PATH } from "./constants.ts";
 import { isPlainObject } from "./utils.ts";
-import { ENVConfiguration, Configuration } from "./cfg.ts";
+import { ENVConfiguration } from "./cfg.ts";
 import { Loadable } from "./loader.ts";
 
 interface EnvOpt {
