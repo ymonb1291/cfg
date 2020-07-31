@@ -37,8 +37,6 @@ export function cfg<Config extends Configuration, Env extends ENVConfiguration>(
         });
       } else if (isPlainObject(args[0])) {
         return Cfg.init<Config, Env>(args[0] as object);
-      } else {
-        throw new Error(`Invalid argument`);
       }
     default:
       return Cfg.init<Config, Env>({});
