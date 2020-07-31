@@ -1,6 +1,5 @@
-// TODO update error messages
-
 import { join, isAbsolute, existsSync } from "./depts.ts";
+import { ErrorHandler } from "./error.ts";
 
 export class FileSystem {
   public readFile(pathToFile: string): string {
@@ -21,7 +20,7 @@ export class FileSystem {
     try {
       return decoder.decode(data);
     } catch (error) {
-      throw new Error(`Error when decoding ${pathToFile}`);
+      throw new ErrorHandler("FILE_DECODING_FAILURE", `Could not decode ${pathToFile}`);
     }
   }
 
@@ -29,7 +28,7 @@ export class FileSystem {
     if (existsSync(pathToFile)) {
       return this.decode(pathToFile, Deno.readFileSync(pathToFile));
     } else {
-      throw new Error(`Can't open file ${pathToFile}`);
+      throw new ErrorHandler("FILE_READ_FAILURE", `Can't read ${pathToFile}`);
     }
   }
 }

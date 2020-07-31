@@ -1,7 +1,6 @@
-// TODO update error messages
-
 import { parse, parseTOML, parseYAML } from "./depts.ts";
 import { ENVParser } from "./envparser.ts";
+import { ErrorHandler } from "./error.ts";
 
 type ENV = "ENV" | "env";
 type JSON = "JSON" | "json";
@@ -18,14 +17,13 @@ enum MarkupLanguages {
 }
 
 export class Parser {
-
   // TODO: We are only using the language argument for "ENV". Why does MarkupLanguage support
   // upper and lower cases then? It should be attempted to let the end user specify the language.
   // But can TS differenciate an object such as {path: "abc.yml", lang: "YAML"} with Configuration?
   public parse(data: string, pathToFile: string, language?: MarkupLanguage): unknown {
-    language = language || this.inferLanguage(pathToFile);
+    const lang = language || String(this.inferLanguage(pathToFile));
 
-    switch (language.toUpperCase()) {
+    switch (lang.toUpperCase()) {
       case MarkupLanguages.ENV.toUpperCase():
         return this.parseAsENV(data, pathToFile);
       case MarkupLanguages.JSON.toUpperCase():
@@ -36,11 +34,11 @@ export class Parser {
       case MarkupLanguages.YML.toUpperCase():
         return this.parseAsYAML(data, pathToFile);
       default:
-        throw new Error(`Unknown language in ${pathToFile}`);
+        throw new ErrorHandler("UNKNOWN_LANGUAGE", `Unknown language in ${pathToFile}`);
     }
   }
 
-  private inferLanguage(pathToFile: string): MarkupLanguage {
+  private inferLanguage(pathToFile: string): MarkupLanguage | void {
     const path = parse(pathToFile);
 
     if (path.ext === "" && path.base.toLowerCase() === ".env") {
@@ -58,7 +56,7 @@ export class Parser {
       case ".env":
         return MarkupLanguages.ENV;
       default:
-        throw new Error(`Can't determine language of ${pathToFile}.`);
+        return void 0;
     }
   }
 
@@ -67,7 +65,7 @@ export class Parser {
       const envParser = new ENVParser();
       return envParser.parse(data);
     } catch (error) {
-      throw new Error(`An unexpected error occured when parsing ${pathToFile}.`);
+      throw new ErrorHandler("UNEXPECTED_PARSER_ENV", `An unexpected error occured when parsing ${pathToFile}`);
     }
   }
 
@@ -75,7 +73,7 @@ export class Parser {
     try {
       return JSON.parse(data);
     } catch (error) {
-      throw new Error(`An unexpected error occured when parsing ${pathToFile}.`);
+      throw new ErrorHandler("UNEXPECTED_PARSER_JSON", `An unexpected error occured when parsing ${pathToFile}`);
     }
   }
 
@@ -83,7 +81,7 @@ export class Parser {
     try {
       return parseTOML(data);
     } catch (error) {
-      throw new Error(`An unexpected error occured when parsing ${pathToFile}.`);
+      throw new ErrorHandler("UNEXPECTED_PARSER_TOML", `An unexpected error occured when parsing ${pathToFile}`);
     }
   }
 
@@ -91,7 +89,7 @@ export class Parser {
     try {
       return parseYAML(data);
     } catch (error) {
-      throw new Error(`An unexpected error occured when parsing ${pathToFile}.`);
+      throw new ErrorHandler("UNEXPECTED_PARSER_YAML", `An unexpected error occured when parsing ${pathToFile}`);
     }
   }
 }
