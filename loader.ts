@@ -3,6 +3,8 @@ import { InternalOptions } from "./options.ts";
 import { Parser } from "./parser.ts";
 import { ENVConfiguration, Configuration } from "./cfg.ts";
 
+export type Loadable = string | Configuration | ((env: ENVConfiguration) => Configuration);
+
 export class Loader {
   constructor(private readonly internalOptions: InternalOptions) {}
 

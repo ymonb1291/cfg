@@ -1,6 +1,7 @@
 import { Cfg, ENVConfiguration, Configuration } from "./cfg.ts";
 import { isPlainObject } from "./utils.ts";
-import { Opts, Loadable } from "./options.ts";
+import { Opts } from "./options.ts";
+import { Loadable } from "./loader.ts";
 
 export function cfg<Config extends Configuration, Env extends ENVConfiguration>(): Cfg<Config, Env>;
 export function cfg<Config extends Configuration, Env extends ENVConfiguration>(
