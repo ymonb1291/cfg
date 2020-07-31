@@ -16,6 +16,10 @@ export class Loader {
   }
 
   private get envFile(): ENVConfiguration {
+    if (!this.internalOptions.env.path) {
+      return {};
+    }
+
     const filesystem = new FileSystem();
     const data = filesystem.readFile(this.internalOptions.env.path);
     const parser = new Parser();
@@ -63,7 +67,7 @@ export class Loader {
 
   private mergeEnv(configuration: Configuration, env: ENVConfiguration): Configuration {
     if (this.internalOptions.env.merge) {
-      return Object.assign({}, configuration, env);
+      return Object.assign(configuration, env);
     }
     return configuration;
   }

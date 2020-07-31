@@ -1,4 +1,4 @@
-import { DEFAULT_ENV_EXPORT, DEFAULT_ENV_MERGE, DEFAULT_ENV_IMPORT, DEFAULT_ENV_PATH } from "./constants.ts";
+import { DEFAULT_ENV_EXPORT, DEFAULT_ENV_MERGE, DEFAULT_ENV_PATH } from "./constants.ts";
 import { isPlainObject } from "./utils.ts";
 import { ENVConfiguration } from "./cfg.ts";
 import { Loadable } from "./loader.ts";
@@ -53,8 +53,8 @@ export class Options {
 
   private get computedEnvImportOption(): ENVConfiguration {
     return isPlainObject(this.raw.env)
-      ? (this.raw.env as EnvOpt)?.import || DEFAULT_ENV_IMPORT
-      : DEFAULT_ENV_IMPORT;
+      ? (this.raw.env as EnvOpt)?.import || {}
+      : {};
   }
 
   private get computedEnvMergeOption(): boolean {
