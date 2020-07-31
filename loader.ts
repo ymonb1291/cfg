@@ -1,6 +1,6 @@
 import { FileSystem } from "./filesystem.ts";
 import { InternalOptions } from "./options.ts";
-import { Parser } from "./parser.ts";
+import { Parser, MarkupLanguages } from "./parser.ts";
 import { ENVConfiguration, Configuration } from "./cfg.ts";
 
 export type Loadable = string | Configuration | ((env: ENVConfiguration) => Configuration);
@@ -19,7 +19,7 @@ export class Loader {
     const filesystem = new FileSystem();
     const data = filesystem.readFile(this.internalOptions.env.path);
     const parser = new Parser();
-    return parser.parse(data, this.internalOptions.env.path, "ENV") as ENVConfiguration;
+    return parser.parse(data, this.internalOptions.env.path, MarkupLanguages.ENV) as ENVConfiguration;
   }
 
   private exportEnv(env: ENVConfiguration): void {

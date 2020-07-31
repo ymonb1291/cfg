@@ -2,24 +2,16 @@ import { parse, parseTOML, parseYAML } from "./depts.ts";
 import { ENVParser } from "./envparser.ts";
 import { ErrorHandler } from "./error.ts";
 
-type ENV = "ENV" | "env";
-type JSON = "JSON" | "json";
-type TOML = "TOML" | "toml";
-type YAML = "YAML" | "yaml" | "YML" | "yml";
-type MarkupLanguage = ENV | JSON | TOML | YAML;
+type MarkupLanguage = MarkupLanguages.ENV | MarkupLanguages.JSON | MarkupLanguages.TOML | MarkupLanguages.YAML;
 
-enum MarkupLanguages {
+export enum MarkupLanguages {
   ENV = "ENV",
   JSON = "JSON",
   TOML = "TOML",
   YAML = "YAML",
-  YML = "YML",
 }
 
 export class Parser {
-  // TODO: We are only using the language argument for "ENV". Why does MarkupLanguage support
-  // upper and lower cases then? It should be attempted to let the end user specify the language.
-  // But can TS differenciate an object such as {path: "abc.yml", lang: "YAML"} with Configuration?
   public parse(data: string, pathToFile: string, language?: MarkupLanguage): unknown {
     const lang = language || String(this.inferLanguage(pathToFile));
 
@@ -31,7 +23,6 @@ export class Parser {
       case MarkupLanguages.TOML.toUpperCase():
         return this.parseAsTOML(data, pathToFile);
       case MarkupLanguages.YAML.toUpperCase():
-      case MarkupLanguages.YML.toUpperCase():
         return this.parseAsYAML(data, pathToFile);
       default:
         throw new ErrorHandler("UNKNOWN_LANGUAGE", `Unknown language in ${pathToFile}`);
