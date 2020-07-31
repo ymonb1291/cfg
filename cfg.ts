@@ -34,7 +34,7 @@ export class Cfg<Config extends Configuration, Env extends ENVConfiguration> ext
     opts: Opts
   ): Cfg<Config, Env> {
     opts.scope = opts.scope || DEFAULT_SCOPE;
-    
+
     if (this.hasScope(opts.scope)) {
       return this.getScope(opts.scope);
     } else {
@@ -51,5 +51,26 @@ export class Cfg<Config extends Configuration, Env extends ENVConfiguration> ext
       ErrorHandler.print(error);
       Deno.exit(0);
     }
+  }
+
+  public get<P1 extends keyof NonNullable<Config>>(): NonNullable<Config> | undefined;
+  public get<P1 extends keyof NonNullable<Config>>(prop1: P1): NonNullable<Config>[P1] | undefined;
+  public get<P1 extends keyof NonNullable<Config>, P2 extends keyof NonNullable<NonNullable<Config>[P1]>>(
+    prop1: P1,
+    prop2: P2
+  ): NonNullable<NonNullable<Config>[P1]>[P2] | undefined;
+  public get<
+    P1 extends keyof NonNullable<Config>,
+    P2 extends keyof NonNullable<NonNullable<Config>[P1]>,
+    P3 extends keyof NonNullable<NonNullable<Config>[P1]>[P2]
+  >(prop1: P1, prop2: P2, prop3: P3): NonNullable<NonNullable<NonNullable<Config>[P1]>[P2]>[P3] | undefined;
+  public get<
+    P1 extends keyof NonNullable<Config>,
+    P2 extends keyof NonNullable<NonNullable<Config>[P1]>,
+    P3 extends keyof NonNullable<NonNullable<Config>[P1]>[P2],
+    P4 extends keyof NonNullable<NonNullable<NonNullable<Config>[P1]>[P2]>[P3]
+  >(prop1: P1, prop2: P2, prop3: P3, prop4: P4): NonNullable<NonNullable<NonNullable<NonNullable<Config>[P1]>[P2]>[P3]>[P4] | undefined;
+  public get(...props: string[]): any {
+    return props.reduce((result, prop) => (result == null ? undefined : result[prop]), this.config as any);
   }
 }
