@@ -1,8 +1,7 @@
 import { FileSystem } from "./filesystem.ts";
 import { InternalOptions } from "./options.ts";
 import { Parser } from "./parser.ts";
-import { ENVConfiguration } from "./cfg.ts";
-import { Configuration } from "./store.ts";
+import { ENVConfiguration, Configuration } from "./cfg.ts";
 
 export class Loader {
   constructor(private readonly internalOptions: InternalOptions) {}

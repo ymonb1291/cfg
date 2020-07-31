@@ -1,7 +1,13 @@
 import { Opts, Options, InternalOptions } from "./options.ts";
 import { DEFAULT_SCOPE } from "./constants.ts";
-import { Configuration, Store } from "./store.ts";
+import { Store } from "./store.ts";
 import { Loader } from "./loader.ts";
+
+type ValueType = string | number | boolean | Configuration;
+
+export interface Configuration {
+  [key: string]: ValueType | ValueType[];
+}
 
 export interface ENVConfiguration {
   [key: string]: string | number | boolean;

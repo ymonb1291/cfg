@@ -1,5 +1,4 @@
-import { Configuration } from "./store.ts";
-import { ENVConfiguration } from "./cfg.ts";
+import { ENVConfiguration, Configuration } from "./cfg.ts";
 
 export const DEFAULT_ENV_EXPORT: boolean = false;
 // TODO: DEFAULT_ENV_IMPORT must be empty for release
