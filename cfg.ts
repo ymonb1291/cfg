@@ -69,8 +69,20 @@ export class Cfg<Config extends Configuration, Env extends ENVConfiguration> ext
     P2 extends keyof NonNullable<NonNullable<Config>[P1]>,
     P3 extends keyof NonNullable<NonNullable<Config>[P1]>[P2],
     P4 extends keyof NonNullable<NonNullable<NonNullable<Config>[P1]>[P2]>[P3]
-  >(prop1: P1, prop2: P2, prop3: P3, prop4: P4): NonNullable<NonNullable<NonNullable<NonNullable<Config>[P1]>[P2]>[P3]>[P4] | undefined;
+  >(
+    prop1: P1,
+    prop2: P2,
+    prop3: P3,
+    prop4: P4
+  ): NonNullable<NonNullable<NonNullable<NonNullable<Config>[P1]>[P2]>[P3]>[P4] | undefined;
   public get(...props: string[]): any {
     return props.reduce((result, prop) => (result == null ? undefined : result[prop]), this.config as any);
+  }
+
+  public getp(path?: string): unknown {
+    const matches = (path || "").match(
+      /([a-zA-Z0-9]+)|(?=[a-zA-Z0-9]+\[)([a-zA-Z0-9]+)|(?=\[[a-zA-Z0-9]+\])([a-zA-Z0-9]+)/g
+    ) || [];
+    return matches.reduce((result, prop) => (result == null ? undefined : result[prop]), this.config as any);
   }
 }
