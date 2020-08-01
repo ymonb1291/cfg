@@ -6,3 +6,4 @@ export { cfg } from "./factory.ts";
 // Other exports
 export { Configuration, ENVConfiguration } from "./cfg.ts";
 export { ConfigFunction } from "./loader.ts";
+export { Opts } from "./options.ts";
