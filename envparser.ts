@@ -2,6 +2,8 @@ const REGEXP_NEWLINES: RegExp = /\n|\r|\r\n/;
 // TODO: REGEXP_DATA doesn't work well when the value has a # between quotes. The code assumes that the comment
 // starts between the quotes. This should be fixed if possible, or the feature for in-line comments should be removed.
 const REGEXP_DATA: RegExp = /^\s*(?![0-9_]*\s*=\s*([\W\w\s.]*)\s*$)[A-Z0-9_]+\s*=\s*(.*)?\s*(?<!#.*)/gi;
+//const REGEXP_DATA: RegExp = /([A-Za-z_]\w*)\s*=\s*('[^'\\]*(?:\\.[^'\\]*)*'|"[^"\\]*(?:\\.[^"\\]*)*"|[^\r\n#]*)/g;
+//const REGEXP_DATA: RegExp = /([A-Za-z_]\w*)[ \t]*=[ \t]*('[^'\\]*(?:\\.[^'\\]*)*'|"[^"\\]*(?:\\.[^"\\]*)*"|[^\r\n#]*)/g;
 const REGEXP_KEY: RegExp = /.+(?<!=.*)/g;
 const REGEXP_VALUE: RegExp = /(?!.*=).+/g;
 const REGEXP_IPV4: RegExp = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/g;
