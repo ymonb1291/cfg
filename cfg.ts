@@ -79,6 +79,12 @@ export class Cfg<Config extends Configuration, Env extends ENVConfiguration> ext
     return props.reduce((result, prop) => (result == null ? undefined : result[prop]), this.config as any);
   }
 
+  public getEnv(): NonNullable<Env>;
+  public getEnv<P1 extends keyof NonNullable<Env>>(prop1: P1): NonNullable<Env>[P1];
+  public getEnv(prop?: string): any {
+    return prop ? this.env[prop] : this.env;
+  }
+
   public getp(path?: string): unknown {
     const matches =
       (path || "").match(
