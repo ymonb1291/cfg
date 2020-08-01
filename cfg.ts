@@ -80,9 +80,10 @@ export class Cfg<Config extends Configuration, Env extends ENVConfiguration> ext
   }
 
   public getp(path?: string): unknown {
-    const matches = (path || "").match(
-      /([a-zA-Z0-9]+)|(?=[a-zA-Z0-9]+\[)([a-zA-Z0-9]+)|(?=\[[a-zA-Z0-9]+\])([a-zA-Z0-9]+)/g
-    ) || [];
+    const matches =
+      (path || "").match(
+        /([a-zA-Z0-9]+)|(?=[a-zA-Z0-9]+\[)([a-zA-Z0-9]+)|(?=\[[a-zA-Z0-9]+\])([a-zA-Z0-9]+)/g
+      ) || [];
     return matches.reduce((result, prop) => (result == null ? undefined : result[prop]), this.config as any);
   }
 }
