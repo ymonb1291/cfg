@@ -3,21 +3,21 @@ import { isPlainObject } from "./utils.ts";
 import { Opts } from "./options.ts";
 import { Loadable } from "./loader.ts";
 
-export function cfg<Config extends Configuration, Env extends ENVConfiguration>(): Cfg<Config, Env>;
-export function cfg<Config extends Configuration, Env extends ENVConfiguration>(
+export function cfg<Config extends Configuration, Env extends ENVConfiguration = {}>(): Cfg<Config, Env>;
+export function cfg<Config extends Configuration, Env extends ENVConfiguration = {}>(
   scope: string
 ): Cfg<Config, Env>;
-export function cfg<Config extends Configuration, Env extends ENVConfiguration>(
+export function cfg<Config extends Configuration, Env extends ENVConfiguration = {}>(
   load: Loadable[]
 ): Cfg<Config, Env>;
-export function cfg<Config extends Configuration, Env extends ENVConfiguration>(
+export function cfg<Config extends Configuration, Env extends ENVConfiguration = {}>(
   scope: string,
   load: Loadable[]
 ): Cfg<Config, Env>;
-export function cfg<Config extends Configuration, Env extends ENVConfiguration>(
+export function cfg<Config extends Configuration, Env extends ENVConfiguration = {}>(
   options: Opts
 ): Cfg<Config, Env>;
-export function cfg<Config extends Configuration, Env extends ENVConfiguration>(
+export function cfg<Config extends Configuration, Env extends ENVConfiguration = {}>(
   ...args: any
 ): Cfg<Config, Env> {
   switch (args.length) {
