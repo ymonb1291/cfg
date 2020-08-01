@@ -4,6 +4,7 @@ const REGEXP_NEWLINES: RegExp = /\n|\r|\r\n/;
 const REGEXP_DATA: RegExp = /^\s*(?![0-9_]*\s*=\s*([\W\w\s.]*)\s*$)[A-Z0-9_]+\s*=\s*(.*)?\s*(?<!#.*)/gi;
 const REGEXP_KEY: RegExp = /.+(?<!=.*)/g;
 const REGEXP_VALUE: RegExp = /(?!.*=).+/g;
+const REGEXP_IPV4: RegExp = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/g;
 
 export class ENVParser {
   public parse(data: string): unknown {
@@ -53,7 +54,7 @@ export class ENVParser {
         return str.substr(1, str.length - 2).replace(/\\"/g, `"`);
       } else if (is_simpleQuoted) {
         return str.substr(1, str.length - 2).replace(/\\'/g, `'`);
-      } else if (!isNaN(parseInt(str))) {
+      } else if (!isNaN(parseInt(str)) && !REGEXP_IPV4.test(str)) {
         return parseInt(str);
       } else if (str.toLowerCase() === "true") {
         return true;
