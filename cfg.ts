@@ -4,10 +4,10 @@ import { Store } from "./store.ts";
 import { Loader } from "./loader.ts";
 import { ErrorHandler } from "./error.ts";
 
-type ValueType = string | number | boolean | Configuration;
+type ConfigurationValue = string | number | boolean | Configuration;
 
 export interface Configuration {
-  [key: string]: ValueType | ValueType[];
+  [key: string]: ConfigurationValue | ConfigurationValue[];
 }
 
 export interface ENVConfiguration {
