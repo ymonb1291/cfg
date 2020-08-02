@@ -3,9 +3,9 @@ import { InternalOptions } from "./options.ts";
 import { Parser, MarkupLanguages } from "./parser.ts";
 import { ENVConfiguration, Configuration } from "./cfg.ts";
 
-export type ConfigFunction<T extends ENVConfiguration> = (env: T) => Configuration;
+export type ConfigFunction<T extends ENVConfiguration = any> = (env: T) => Configuration;
 
-export type Loadable = string | Configuration | ConfigFunction<any>;
+export type Loadable = string | Configuration | ConfigFunction;
 
 export class Loader {
   constructor(private readonly internalOptions: InternalOptions) {}
