@@ -1,14 +1,7 @@
-import { ConfigFunction } from "../../mod.ts";
+import { Server } from "../types/server.ts";
+import { ENV } from "../types/env.ts";
+import { ConfigFunction } from "../../loader.ts";
 
-export type ENV = {
-  PROTOCOL: "http" | "https";
-  HOST: string;
-};
-
-export type Server = {
-  url: string;
-};
-
-export const server: ConfigFunction<ENV> = (env: ENV) => ({
+export const server: ConfigFunction = (env: ENV) => ({
   url: `${env.PROTOCOL}://${env.HOST}`,
 });

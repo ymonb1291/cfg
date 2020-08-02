@@ -1,14 +1,8 @@
 // Command: $ deno run --unstable --allow-read ./external_configurations.ts
 import cfg from "../mod.ts";
 import { customers } from "./configs/customers.ts";
-
-type Customers = {
-  customers: { name: string; age: number }[];
-};
-
-type Library = {
-  books: { title: string; author: string; year: number }[];
-};
+import { Customers } from "./types/customers.ts";
+import { Library } from "./types/library.ts";
 
 const config = cfg<Library & Customers>({
   // here we are importing a YAML file and a function that returns a plain object

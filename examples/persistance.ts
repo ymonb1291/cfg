@@ -1,17 +1,11 @@
 // Command: $ deno run --unstable --allow-read ./persistance.ts
 import cfg from "../mod.ts";
 import { customers } from "./configs/customers.ts";
+import { Customers } from "./types/customers.ts";
+import { Library } from "./types/library.ts";
 
 type Foo = {
   foo: string;
-};
-
-type Customers = {
-  customers: { name: string; age: number }[];
-};
-
-type Library = {
-  books: { title: string; author: string; year: number }[];
 };
 
 const foo: Foo = {
@@ -21,8 +15,8 @@ const foo: Foo = {
 function scopeA() {
   // Here, we create configurations
   cfg([foo]);
-  cfg("CUSTOMERS", [customers])
-  cfg("LIBRARY", ["./configs/library.yml"])
+  cfg("CUSTOMERS", [customers]);
+  cfg("LIBRARY", ["./configs/library.yml"]);
 }
 
 // Now let's work in another block. Could also be another module.
