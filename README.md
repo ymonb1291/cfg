@@ -1,4 +1,7 @@
 # Cfg
+![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/ymonb1291/cfg?include_prereleases&style=flat-square)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ymonb1291/cfg?style=flat-square)
+![GitHub](https://img.shields.io/github/license/ymonb1291/cfg?style=flat-square)
 
 **Cfg** is a configuration handler for **Deno** with support for `.env` and `scopes`.
 
@@ -12,10 +15,10 @@ Import the latest release.
 
 ```
 // As named import
-import { cfg } from "https://denopkg.com/ymonb1291/cfg@v1.0.0-beta.2/mod.ts";
+import { cfg } from "https://deno.land/x/cfg@v1.0.0-beta.3/mod.ts";
 
 // Or as default import
-import cfg from "https://denopkg.com/ymonb1291/cfg@v1.0.0-beta.2/mod.ts";
+import cfg from "https://deno.land/x/cfg@v1.0.0-beta.3/mod.ts";
 ```
 
 # Basic usage
