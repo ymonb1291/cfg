@@ -1,0 +1,15 @@
+[[customers]]
+  name = "Francesco Suarez"
+  age = 54
+
+[[customers]]
+  name = "Leslie Hough"
+  age = 26
+
+[[customers]]
+  name = "Kenneth Mcgowan"
+  age = 31
+
+[[customers]]
+  name = "Lucie Simon"
+  age = 46
