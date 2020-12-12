@@ -1,0 +1,24 @@
+name: release
+
+on:
+  release:
+    types: [published]
+    
+jobs:
+  eggs:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Setup repo
+        uses: actions/checkout@v2
+
+      - name: Setup Deno environment
+        uses: denolib/setup-deno@v2.3.0
+        with:
+          deno-version: v1.5.x
+
+      - name: Publish module
+        run: |
+          deno install -A --unstable https://x.nest.land/eggs@0.3.2/eggs.ts
+          eggs link ${{ secrets.NESTAPIKEY }}
+          eggs publish --yes --version $(git describe --tags $(git rev-list --tags --max-count=1))
