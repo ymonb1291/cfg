@@ -1,0 +1,11 @@
+name: cfg
+entry: ./mod.ts
+description: Configuration handler for deno with support for .env and scopes
+homepage: https://github.com/ymonb1291/cfg
+unstable: false
+unlisted: false
+ignore:
+  - .github/
+  - .vscode/
+  - examples/
+check: false
