@@ -1,4 +1,4 @@
-name: ci
+name: Nightly
 
 on:
   push:
@@ -10,12 +10,7 @@ on:
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        deno: ["v1.9.x"]
-        os: [windows-latest, ubuntu-latest]
+    runs-on: ubuntu-latest
 
     steps:
       - name: Setup repo
@@ -24,7 +19,7 @@ jobs:
       - name: Setup Deno
         uses: denolib/setup-deno@v2.3.0
         with:
-          deno-version: ${{ matrix.deno }}
+          deno-version: nightly
 
       - name: Cache Dependencies
         run: deno cache deps_test.ts
