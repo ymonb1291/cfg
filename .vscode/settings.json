@@ -1,4 +1,16 @@
 {
   "deno.enable": true,
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true
+  },
+  "deno.lint": true,
+  "deno.suggest.imports.hosts": {
+    "https://deno.land": true
+  }
 }
