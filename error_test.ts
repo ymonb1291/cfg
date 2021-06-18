@@ -1,22 +1,24 @@
 import { DEFAULT_SCOPE } from "./cfg.ts";
-import { assertEquals, assertThrows, Rhum } from "./deps_test.ts";
+import { Rhum } from "./deps_test.ts";
 import * as Errors from "./error.ts";
 
 const META = "META";
 const SYMBOL = Symbol("META");
 
 Rhum.testPlan("error.ts", () => {
+
   Rhum.testSuite("DuplicateEnv", () => {
+
     Rhum.testCase("Error name", () => {
       try {
         throw new Errors.DuplicateEnv(META);
       } catch (error) {
-        assertEquals(error.name, "DuplicateEnv");
+        Rhum.asserts.assertEquals(error.name, "DuplicateEnv");
       }
     });
 
     Rhum.testCase("Error message", () => {
-      assertThrows(
+      Rhum.asserts.assertThrows(
         () => {
           throw new Errors.DuplicateEnv(META);
         },
@@ -27,16 +29,17 @@ Rhum.testPlan("error.ts", () => {
   });
 
   Rhum.testSuite("InvalidPath", () => {
+
     Rhum.testCase("Error name", () => {
       try {
         throw new Errors.InvalidPath(META);
       } catch (error) {
-        assertEquals(error.name, "InvalidPath");
+        Rhum.asserts.assertEquals(error.name, "InvalidPath");
       }
     });
 
     Rhum.testCase("Error message", () => {
-      assertThrows(
+      Rhum.asserts.assertThrows(
         () => {
           throw new Errors.InvalidPath(META);
         },
@@ -47,16 +50,17 @@ Rhum.testPlan("error.ts", () => {
   });
 
   Rhum.testSuite("ScopeOverwriteError", () => {
+
     Rhum.testCase("Error name with a string as parameter", () => {
       try {
         throw new Errors.ScopeOverwriteError(META);
       } catch (error) {
-        assertEquals(error.name, "ScopeOverwriteError");
+        Rhum.asserts.assertEquals(error.name, "ScopeOverwriteError");
       }
     });
 
     Rhum.testCase("Error message with a string as parameter", () => {
-      assertThrows(
+      Rhum.asserts.assertThrows(
         () => {
           throw new Errors.ScopeOverwriteError(META);
         },
@@ -69,12 +73,12 @@ Rhum.testPlan("error.ts", () => {
       try {
         throw new Errors.ScopeOverwriteError(SYMBOL);
       } catch (error) {
-        assertEquals(error.name, "ScopeOverwriteError");
+        Rhum.asserts.assertEquals(error.name, "ScopeOverwriteError");
       }
     });
 
     Rhum.testCase("Error message with a symbol as parameter", () => {
-      assertThrows(
+      Rhum.asserts.assertThrows(
         () => {
           throw new Errors.ScopeOverwriteError(SYMBOL);
         },
@@ -85,16 +89,17 @@ Rhum.testPlan("error.ts", () => {
   });
 
   Rhum.testSuite("UndefinedFileFormat", () => {
+    
     Rhum.testCase("Error name", () => {
       try {
         throw new Errors.UndefinedFileFormat(META);
       } catch (error) {
-        assertEquals(error.name, "UndefinedFileFormat");
+        Rhum.asserts.assertEquals(error.name, "UndefinedFileFormat");
       }
     });
 
     Rhum.testCase("Error message", () => {
-      assertThrows(
+      Rhum.asserts.assertThrows(
         () => {
           throw new Errors.UndefinedFileFormat(META);
         },
@@ -105,16 +110,17 @@ Rhum.testPlan("error.ts", () => {
   });
 
   Rhum.testSuite("UnknownScopeError", () => {
+
     Rhum.testCase("Error name with a string as parameter", () => {
       try {
         throw new Errors.UnknownScopeError(META);
       } catch (error) {
-        assertEquals(error.name, "UnknownScopeError");
+        Rhum.asserts.assertEquals(error.name, "UnknownScopeError");
       }
     });
 
     Rhum.testCase("Error message with a string as parameter", () => {
-      assertThrows(
+      Rhum.asserts.assertThrows(
         () => {
           throw new Errors.UnknownScopeError(META);
         },
@@ -127,12 +133,12 @@ Rhum.testPlan("error.ts", () => {
       try {
         throw new Errors.UnknownScopeError(SYMBOL);
       } catch (error) {
-        assertEquals(error.name, "UnknownScopeError");
+        Rhum.asserts.assertEquals(error.name, "UnknownScopeError");
       }
     });
 
     Rhum.testCase("Error message with a symbol as parameter", () => {
-      assertThrows(
+      Rhum.asserts.assertThrows(
         () => {
           throw new Errors.UnknownScopeError(SYMBOL);
         },
@@ -145,12 +151,12 @@ Rhum.testPlan("error.ts", () => {
       try {
         throw new Errors.UnknownScopeError(DEFAULT_SCOPE);
       } catch (error) {
-        assertEquals(error.name, "UnknownScopeError");
+        Rhum.asserts.assertEquals(error.name, "UnknownScopeError");
       }
     });
 
     Rhum.testCase("Error message with the default scope", () => {
-      assertThrows(
+      Rhum.asserts.assertThrows(
         () => {
           throw new Errors.UnknownScopeError(DEFAULT_SCOPE);
         },
@@ -158,7 +164,9 @@ Rhum.testPlan("error.ts", () => {
         `Cfg has not been initialized yet`,
       );
     });
+
   });
+
 });
 
 Rhum.run();

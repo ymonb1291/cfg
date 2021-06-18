@@ -1,28 +1,14 @@
-import {
-  assert,
-  assertEquals,
-  assertThrows,
-  existsSync,
-  resolve,
-  Rhum,
-} from "./deps_test.ts";
+import { Rhum } from "./deps_test.ts";
 import { Loader } from "./loader.ts";
 import { Settings } from "./settings.interface.ts";
-import { DuplicateEnv, InvalidPath } from "./error.ts";
-
-export function writeFile(path: string, content: string): void {
-  path = resolve(path);
-  const encoder = new TextEncoder();
-  const data = encoder.encode(content);
-  Deno.writeFileSync(path, data, { create: true });
-}
-
-export function deleteFile(path: string): void {
-  path = resolve(path);
-  if (existsSync(path)) {
-    Deno.removeSync(path);
-  }
-}
+import {
+  DuplicateEnv,
+  InvalidPath,
+} from "./error.ts";
+import {
+  deleteFile,
+  writeFile,
+} from "./test.utils.ts";
 
 function genSettings(): Settings {
   return {
@@ -37,13 +23,16 @@ function genSettings(): Settings {
   };
 }
 
+const VAL_NUM=9;
+const VAL_BOOL=true;
 const FILENAME = ".env";
 const ENV_KEY = "CFG_LOADER";
-const dotEnv = `${ENV_KEY}=111`;
-const obj = { bool: true };
-const fn = () => ({ num: 9 });
+const dotEnv = `${ENV_KEY}=${VAL_NUM}`;
+const obj = { bool: VAL_BOOL };
+const fn = () => ({ num: VAL_NUM });
 
 Rhum.testPlan("loader.ts", () => {
+  
   Rhum.testSuite("Sources", () => {
     Rhum.testCase("Can load an external file", () => {
       const settings: Settings = genSettings();
@@ -53,7 +42,7 @@ Rhum.testPlan("loader.ts", () => {
       const loader = new Loader(settings);
       deleteFile(FILENAME);
 
-      assert(loader.conf[ENV_KEY]);
+      Rhum.asserts.assert(loader.conf[ENV_KEY]);
     });
 
     Rhum.testCase("Can load a function", () => {
@@ -62,7 +51,7 @@ Rhum.testPlan("loader.ts", () => {
 
       const loader = new Loader(settings);
 
-      assert(loader.conf["num"]);
+      Rhum.asserts.assertEquals(loader.conf["num"], VAL_NUM);
     });
 
     Rhum.testCase("Can load a plain object", () => {
@@ -71,7 +60,7 @@ Rhum.testPlan("loader.ts", () => {
 
       const loader = new Loader(settings);
 
-      assert(loader.conf["bool"]);
+      Rhum.asserts.assertEquals(loader.conf["bool"], VAL_BOOL);
     });
 
     Rhum.testCase("Returns a merged configuration", () => {
@@ -82,9 +71,9 @@ Rhum.testPlan("loader.ts", () => {
       const loader = new Loader(settings);
       deleteFile(FILENAME);
 
-      assert(loader.conf[ENV_KEY]);
-      assert(loader.conf["num"]);
-      assert(loader.conf["bool"]);
+      Rhum.asserts.assertEquals(loader.conf[ENV_KEY], String(VAL_NUM));
+      Rhum.asserts.assertEquals(loader.conf["num"], VAL_NUM);
+      Rhum.asserts.assertEquals(loader.conf["bool"], VAL_BOOL);
     });
   });
 
@@ -97,7 +86,7 @@ Rhum.testPlan("loader.ts", () => {
       const loader = new Loader(settings);
       deleteFile(FILENAME);
 
-      assert(loader.env[ENV_KEY]);
+      Rhum.asserts.assertEquals(loader.env[ENV_KEY], String(VAL_NUM));
     });
 
     Rhum.testCase("Doesn't export dotenv when env.export is 'false'", () => {
@@ -106,10 +95,10 @@ Rhum.testPlan("loader.ts", () => {
       settings.env.export = false;
 
       writeFile(FILENAME, dotEnv);
-      const loader = new Loader(settings);
+      new Loader(settings);
       deleteFile(FILENAME);
 
-      assert(!Deno.env.get(ENV_KEY));
+      Rhum.asserts.assert(!Deno.env.get(ENV_KEY));
     });
 
     Rhum.testCase("Exports dotenv when env.export is 'true'", () => {
@@ -118,10 +107,10 @@ Rhum.testPlan("loader.ts", () => {
       settings.env.export = true;
 
       writeFile(FILENAME, dotEnv);
-      const loader = new Loader(settings);
+      new Loader(settings);
       deleteFile(FILENAME);
 
-      assert(Deno.env.get(ENV_KEY));
+      Rhum.asserts.assert(Deno.env.get(ENV_KEY));
     });
 
     Rhum.testCase("Doesn't infer values when env.infer is 'false'", () => {
@@ -133,7 +122,7 @@ Rhum.testPlan("loader.ts", () => {
       const loader = new Loader(settings);
       deleteFile(FILENAME);
 
-      assertEquals(loader.env[ENV_KEY], "111");
+      Rhum.asserts.assertEquals(loader.env[ENV_KEY], String(VAL_NUM));
     });
 
     Rhum.testCase("Infers values when env.infer is 'true'", () => {
@@ -145,7 +134,7 @@ Rhum.testPlan("loader.ts", () => {
       const loader = new Loader(settings);
       deleteFile(FILENAME);
 
-      assertEquals(loader.env[ENV_KEY], 111);
+      Rhum.asserts.assertEquals(loader.env[ENV_KEY], VAL_NUM);
     });
 
     Rhum.testCase(
@@ -159,13 +148,12 @@ Rhum.testPlan("loader.ts", () => {
         Deno.env.set(ENV_KEY, "0");
 
         writeFile(FILENAME, dotEnv);
-        let loader: Loader<any, any>;
         try {
-          loader = new Loader(settings);
-          assertEquals(Deno.env.get(ENV_KEY), "111");
-        } catch (error) {
+          new Loader(settings);
+          Rhum.asserts.assertEquals(Deno.env.get(ENV_KEY), String(VAL_NUM));
+        } catch {
           deleteFile(FILENAME);
-          assert(false);
+          Rhum.asserts.assert(false);
         }
         deleteFile(FILENAME);
       },
@@ -183,7 +171,7 @@ Rhum.testPlan("loader.ts", () => {
 
         writeFile(FILENAME, dotEnv);
 
-        assertThrows(() => {
+        Rhum.asserts.assertThrows(() => {
           new Loader(settings);
         }, DuplicateEnv);
 
@@ -194,13 +182,14 @@ Rhum.testPlan("loader.ts", () => {
 
   Rhum.testSuite("Loader.prototype.readFile()", () => {
     Rhum.testCase("Throws InvalidPath if the file doesn't exist", () => {
-      assertThrows(() => {
+      Rhum.asserts.assertThrows(() => {
         const settings: Settings = genSettings();
         settings.load = [FILENAME];
         new Loader(settings);
       }, InvalidPath);
     });
   });
+
 });
 
 Rhum.run();

@@ -1,6 +1,9 @@
-import { assertEquals, assertThrows, Rhum } from "./deps_test.ts";
+import { Rhum } from "./deps_test.ts";
 import { UndefinedFileFormat } from "./error.ts";
-import { MarkupLanguages, parser } from "./parser.ts";
+import {
+  MarkupLanguages,
+  parser
+} from "./parser.ts";
 
 const configurations: { [key: string]: string } = {
   ".env": `ext=.env\nnumber=1`,
@@ -18,42 +21,42 @@ Rhum.testPlan("parser.ts", () => {
       const ext = ".env";
       const filename = ext;
       const res = parser(configurations[filename], filename);
-      assertEquals(res.ext, ext);
+      Rhum.asserts.assertEquals(res.ext, ext);
     });
 
     Rhum.testCase("Works for config.env", () => {
       const ext = ".env";
       const filename = "config" + ext;
       const res = parser(configurations[filename], filename);
-      assertEquals(res.ext, ext);
+      Rhum.asserts.assertEquals(res.ext, ext);
     });
 
     Rhum.testCase("Works for .json", () => {
       const ext = ".json";
       const filename = "config" + ext;
       const res = parser(configurations[filename], filename);
-      assertEquals(res.ext, ext);
+      Rhum.asserts.assertEquals(res.ext, ext);
     });
 
     Rhum.testCase("Works for .toml", () => {
       const ext = ".toml";
       const filename = "config" + ext;
       const res = parser(configurations[filename], filename);
-      assertEquals(res.ext, ext);
+      Rhum.asserts.assertEquals(res.ext, ext);
     });
 
     Rhum.testCase("Works for .yaml", () => {
       const ext = ".yaml";
       const filename = "config" + ext;
       const res = parser(configurations[filename], filename);
-      assertEquals(res.ext, ext);
+      Rhum.asserts.assertEquals(res.ext, ext);
     });
 
     Rhum.testCase("Works for .yml", () => {
       const ext = ".yml";
       const filename = "config" + ext;
       const res = parser(configurations[filename], filename);
-      assertEquals(res.ext, ext);
+      Rhum.asserts.assertEquals(res.ext, ext);
     });
 
     Rhum.testCase(
@@ -61,7 +64,7 @@ Rhum.testPlan("parser.ts", () => {
       () => {
         const ext = ".unknown";
         const filename = "config" + ext;
-        assertThrows(() => {
+        Rhum.asserts.assertThrows(() => {
           parser(configurations[filename], filename);
         }, UndefinedFileFormat);
       },
@@ -77,7 +80,7 @@ Rhum.testPlan("parser.ts", () => {
         filename,
         MarkupLanguages.JSON,
       );
-      assertEquals(res.ext, ext);
+      Rhum.asserts.assertEquals(res.ext, ext);
     });
   });
 
@@ -86,7 +89,7 @@ Rhum.testPlan("parser.ts", () => {
       const ext = ".env";
       const filename = ext;
       const res = parser(configurations[filename], filename, true);
-      assertEquals(res.ext, ext);
+      Rhum.asserts.assertEquals(res.ext, ext);
     });
   });
 
@@ -100,7 +103,7 @@ Rhum.testPlan("parser.ts", () => {
         MarkupLanguages.ENV,
         true,
       );
-      assertEquals(res.number, 1);
+      Rhum.asserts.assertEquals(res.number, 1);
     });
 
     Rhum.testCase(".env type inference can be disabled", () => {
@@ -112,7 +115,7 @@ Rhum.testPlan("parser.ts", () => {
         MarkupLanguages.ENV,
         false,
       );
-      assertEquals(res.number, "1");
+      Rhum.asserts.assertEquals(res.number, "1");
     });
   });
 });
